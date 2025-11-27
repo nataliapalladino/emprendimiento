@@ -1,0 +1,180 @@
+{% extends 'includes/navbar.html' %}
+
+{% block content %}
+<div class="delete-container">
+    <div class="delete-card">
+        <div class="delete-header">
+            <h2>Confirmar Eliminación</h2>
+        </div>
+        
+        <div class="delete-body">
+            <p class="delete-warning">¿Estás seguro de que deseas eliminar el siguiente producto?</p>
+            
+            <div class="product-info">
+                <h3>{{ object.nombre }}</h3>
+                {% if object.descripcion %}
+                    <p><strong>Descripción:</strong> {{ object.descripcion }}</p>
+                {% endif %}
+                {% if object.precio %}
+                    <p><strong>Precio:</strong> ${{ object.precio }}</p>
+                {% endif %}
+                {% if object.talla %}
+                    <p><strong>Talla:</strong> {{ object.talla }}</p>
+                {% endif %}
+                {% if object.color %}
+                    <p><strong>Color:</strong> {{ object.color }}</p>
+                {% endif %}
+            </div>
+
+            <p class="danger-alert">
+                ⚠️ <strong>¡Advertencia!</strong> Esta acción no se puede deshacer.
+            </p>
+
+            <form method="post" class="delete-form">
+                {% csrf_token %}
+                <div class="form-actions">
+                    <a href="{% url 'lista_productos' %}" class="cancel-btn">
+                        ← Cancelar
+                    </a>
+                    <button type="submit" class="delete-btn">
+                        🗑️ Sí, Eliminar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.delete-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    font-family: Arial, sans-serif;
+}
+
+.delete-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.delete-header {
+    background: #dc3545;
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.delete-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.delete-body {
+    padding: 2rem;
+}
+
+.delete-warning {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #333;
+}
+
+.product-info {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.product-info h3 {
+    margin-top: 0;
+    color: #856404;
+    border-bottom: 1px solid #ffeaa7;
+    padding-bottom: 0.5rem;
+}
+
+.product-info p {
+    margin: 0.5rem 0;
+    color: #333;
+}
+
+.danger-alert {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid #f5c6cb;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.delete-form {
+    margin-top: 1.5rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cancel-btn {
+    background: #6c757d;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+    flex: 1;
+    text-align: center;
+}
+
+.cancel-btn:hover {
+    background: #545b62;
+    color: white;
+    text-decoration: none;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    flex: 1;
+    font-size: 1rem;
+}
+
+.delete-btn:hover {
+    background: #c82333;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .delete-container {
+        margin: 1rem auto;
+    }
+    
+    .delete-body {
+        padding: 1.5rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .cancel-btn, .delete-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+</style>
+{% endblock %}

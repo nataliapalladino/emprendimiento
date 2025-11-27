@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Pijama - {{ object.nombre }}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-title {
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .current-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 5px;
+            border: 2px solid #dee2e6;
+        }
+        .image-preview {
+            max-width: 150px;
+            max-height: 150px;
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2 class="form-title text-center">Editar Pijama: {{ object.nombre }}</h2>
+            
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Error!</strong> Por favor corrige los errores below.
+                </div>
+                {% endif %}
+                
+                <div class="row">
+                    <!-- Columna izquierda -->
+                    <div class="col-md-6">
+                        <!-- Campo Nombre -->
+                        <div class="mb-3">
+                            <label for="{{ form.nombre.id_for_label }}" class="form-label">Nombre del Pijama</label>
+                            {{ form.nombre }}
+                            {% if form.nombre.errors %}
+                            <div class="text-danger">
+                                {% for error in form.nombre.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Campo Descripción -->
+                        <div class="mb-3">
+                            <label for="{{ form.descripcion.id_for_label }}" class="form-label">Descripción</label>
+                            {{ form.descripcion }}
+                            {% if form.descripcion.errors %}
+                            <div class="text-danger">
+                                {% for error in form.descripcion.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Campo Precio -->
+                        <div class="mb-3">
+                            <label for="{{ form.precio.id_for_label }}" class="form-label">Precio</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                {{ form.precio }}
+                            </div>
+                            {% if form.precio.errors %}
+                            <div class="text-danger">
+                                {% for error in form.precio.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Campo Material -->
+                        <div class="mb-3">
+                            <label for="{{ form.material.id_for_label }}" class="form-label">Material</label>
+                            {{ form.material }}
+                            {% if form.material.errors %}
+                            <div class="text-danger">
+                                {% for error in form.material.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Columna derecha -->
+                    <div class="col-md-6">
+                        <!-- Campo Stock -->
+                        <div class="mb-3">
+                            <label for="{{ form.stock.id_for_label }}" class="form-label">Stock</label>
+                            {{ form.stock }}
+                            {% if form.stock.errors %}
+                            <div class="text-danger">
+                                {% for error in form.stock.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Campo SKU -->
+                        <div class="mb-3">
+                            <label for="{{ form.sku.id_for_label }}" class="form-label">SKU</label>
+                            {{ form.sku }}
+                            {% if form.sku.errors %}
+                            <div class="text-danger">
+                                {% for error in form.sku.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Campo Disponible -->
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                {{ form.disponible }}
+                                <label class="form-check-label" for="{{ form.disponible.id_for_label }}">
+                                    Producto Disponible
+                                </label>
+                            </div>
+                            {% if form.disponible.errors %}
+                            <div class="text-danger">
+                                {% for error in form.disponible.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Campo Imagen -->
+                        <div class="mb-3">
+                            <label for="{{ form.imagen.id_for_label }}" class="form-label">Imagen del Producto</label>
+                            
+                            <!-- Imagen actual -->
+                            {% if object.imagen %}
+                            <div class="mb-2">
+                                <p class="mb-1"><strong>Imagen actual:</strong></p>
+                                <img src="{{ object.imagen.url }}" alt="{{ object.nombre }}" class="current-image">
+                            </div>
+                            {% endif %}
+                            
+                            {{ form.imagen }}
+                            {% if form.imagen.errors %}
+                            <div class="text-danger">
+                                {% for error in form.imagen.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Previsualización de nueva imagen -->
+                            <div id="imagePreview" class="image-preview"></div>
+                            <div class="form-text">Formatos soportados: JPG, PNG, GIF. Dejar vacío para mantener la imagen actual.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Botones de acción -->
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a href="{% url 'lista_productos' %}" class="btn btn-secondary me-md-2">Cancelar</a>
+                    <a href="{% url 'detalle_producto' object.pk %}" class="btn btn-info me-md-2">Ver Detalles</a>
+                    <button type="submit" class="btn btn-primary">Actualizar Pijama</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script para mejorar los campos y previsualización de imagen -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Agregar clases de Bootstrap a los campos
+            const inputs = document.querySelectorAll('input:not([type="checkbox"]), textarea, select');
+            inputs.forEach(input => {
+                input.classList.add('form-control');
+            });
+            
+            // Estilo especial para el switch de disponible
+            const disponibleCheckbox = document.querySelector('#{{ form.disponible.id_for_label }}');
+            if (disponibleCheckbox) {
+                disponibleCheckbox.classList.add('form-check-input');
+            }
+            
+            // Previsualización de imagen
+            const imagenInput = document.querySelector('#{{ form.imagen.id_for_label }}');
+            const imagePreview = document.getElementById('imagePreview');
+            
+            if (imagenInput && imagePreview) {
+                imagenInput.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            imagePreview.style.display = 'block';
+                            imagePreview.innerHTML = '<img src="' + e.target.result + '" class="img-thumbnail" alt="Vista previa">';
+                        }
+                        
+                        reader.readAsDataURL(this.files[0]);
+                    } else {
+                        imagePreview.style.display = 'none';
+                        imagePreview.innerHTML = '';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

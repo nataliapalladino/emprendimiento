@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Nuevo Pijama</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-title {
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .btn-custom {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+        }
+        .btn-custom:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2 class="form-title text-center">Crear Nuevo Pijama</h2>
+            
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Error!</strong> Por favor corrige los errores below.
+                </div>
+                {% endif %}
+                
+                <!-- Campo Nombre -->
+                <div class="mb-3">
+                    <label for="{{ form.nombre.id_for_label }}" class="form-label">Nombre del Pijama</label>
+                    {{ form.nombre }}
+                    {% if form.nombre.errors %}
+                    <div class="text-danger">
+                        {% for error in form.nombre.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Campo Descripción -->
+                <div class="mb-3">
+                    <label for="{{ form.descripcion.id_for_label }}" class="form-label">Descripción</label>
+                    {{ form.descripcion }}
+                    {% if form.descripcion.errors %}
+                    <div class="text-danger">
+                        {% for error in form.descripcion.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Campo Precio -->
+                <div class="mb-3">
+                    <label for="{{ form.precio.id_for_label }}" class="form-label">Precio</label>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        {{ form.precio }}
+                    </div>
+                    {% if form.precio.errors %}
+                    <div class="text-danger">
+                        {% for error in form.precio.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Campo Imagen -->
+                <div class="mb-3">
+                    <label for="{{ form.imagen.id_for_label }}" class="form-label">Imagen del Producto</label>
+                    {{ form.imagen }}
+                    {% if form.imagen.errors %}
+                    <div class="text-danger">
+                        {% for error in form.imagen.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <div class="form-text">Formatos soportados: JPG, PNG, GIF</div>
+                </div>
+                
+                <!-- Botones de acción -->
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'lista_productos' %}" class="btn btn-secondary me-md-2">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Crear Pijama</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script para mejorar los campos del formulario -->
+    <script>
+        // Agregar clases de Bootstrap a los campos del formulario
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                input.classList.add('form-control');
+            });
+            
+            // Especial para el campo de imagen
+            const imagenInput = document.querySelector('#{{ form.imagen.id_for_label }}');
+            if (imagenInput) {
+                imagenInput.classList.add('form-control');
+            }
+        });
+    </script>
+</body>
+</html>
