@@ -1,7 +1,539 @@
-
 {% extends 'includes/navbar.html' %}
 
 {% block content %}
+
+{% load static %}
+
+<style>
+    :root {
+        --blanco: #FFFFFF;
+        --marron-claro: #F5F1EE;
+        --marron-medio: #8D6E63;
+        --marron-oscuro: #5D4037;
+        --negro: #2A2522;
+        --accent: #E8E2DE;
+    }
+    
+    body {
+        background: 
+            linear-gradient(135deg, var(--marron-medio) 0%, var(--marron-medio) 100%),
+            /* Patrón sutil de textura */
+            url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%238d6e63' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+        min-height: 100vh;
+        font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        background-blend-mode: normal, overlay;
+        background-attachment: fixed;
+    }
+    
+    .page-header {
+        text-align: center;
+        padding: 8rem 1rem 7rem;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: 
+            /* Filtro marrón claro para mejorar legibilidad */
+            linear-gradient(rgba(93, 64, 55, 0.4), rgba(141, 110, 99, 0.35)),
+            /* AQUÍ PON TU URL DE IMAGEN */
+            /* Reemplaza la siguiente línea con tu imagen */
+            url("{% static 'images/imagen.jpg' %}" );
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        border-bottom: 3px solid var(--marron-oscuro);
+    }
+    
+    /* Efecto de brillo sutil */
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.03) 0%,
+            transparent 30%,
+            transparent 70%,
+            rgba(255, 255, 255, 0.03) 100%
+        );
+        z-index: 1;
+        pointer-events: none;
+    }
+    
+    /* Contenido sobre la imagen */
+    .page-title,
+    .page-subtitle {
+        position: relative;
+        z-index: 2;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .page-title {
+        font-size: 4.5rem;
+        font-weight: 300;
+        color: var(--blanco);
+        margin-bottom: 2rem;
+        letter-spacing: -2px;
+        text-shadow: 
+            0 3px 15px rgba(0, 0, 0, 0.4),
+            0 6px 25px rgba(0, 0, 0, 0.3);
+        animation: fadeInDown 1s ease-out;
+        line-height: 1.1;
+    }
+    
+    .page-subtitle {
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 1.8rem;
+        font-weight: 350;
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.7;
+        opacity: 0.95;
+        text-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+        animation: fadeInUp 1s ease-out 0.3s both;
+        padding: 0 2rem;
+    }
+    
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .productos-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem 4rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 3rem;
+    }
+    
+    .producto-card {
+        background: var(--blanco);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 1px solid var(--accent);
+        box-shadow: 
+            0 8px 30px rgba(141, 110, 99, 0.12),
+            0 2px 8px rgba(0, 0, 0, 0.04);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        position: relative;
+    }
+    
+    .producto-card:hover {
+        transform: translateY(-12px) scale(1.02);
+        box-shadow: 
+            0 25px 50px rgba(141, 110, 99, 0.2),
+            0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* IMAGENES MÁS ARRIBA - MENOS ESPACIO SUPERIOR */
+    .producto-imagen {
+        height: 260px;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--blanco) 0%, var(--marron-claro) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        position: relative;
+        border-bottom: 1px solid var(--accent);
+    }
+    
+    .producto-imagen img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.5s ease;
+    }
+    
+    .producto-card:hover .producto-imagen img {
+        transform: scale(1.15);
+    }
+    
+    .sin-imagen {
+        color: var(--marron-medio);
+        font-size: 1rem;
+        text-align: center;
+        padding: 3rem 2rem;
+        background: var(--marron-claro);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        opacity: 0.7;
+    }
+    
+    .sin-imagen i {
+        font-size: 3rem;
+        opacity: 0.5;
+    }
+    
+    .producto-info {
+        padding: 2rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        background: var(--blanco);
+    }
+    
+    .producto-nombre {
+        margin: 0 0 1rem 0;
+        font-size: 1.3rem;
+        font-weight: 500;
+        line-height: 1.4;
+        color: var(--marron-oscuro);
+    }
+    
+    .producto-link {
+        color: inherit;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: block;
+    }
+    
+    .producto-link:hover {
+        color: var(--marron-medio);
+    }
+    
+    .producto-precio {
+        font-size: 1.8rem;
+        font-weight: 400;
+        color: var(--marron-oscuro);
+        margin: 0 0 1.5rem 0;
+        letter-spacing: -0.5px;
+        font-weight: 350;
+    }
+    
+    .producto-precio::before {
+        content: '$';
+        font-size: 1.2rem;
+        margin-right: 2px;
+        opacity: 0.7;
+    }
+    
+    .producto-descripcion {
+        color: var(--negro);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin: 0 0 2rem 0;
+        opacity: 0.8;
+        flex-grow: 1;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .producto-actions {
+        margin-top: auto;
+    }
+    
+    .btn-ver {
+        background: var(--marron-claro);
+        color: var(--marron-oscuro);
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: block;
+        text-align: center;
+        width: 100%;
+    }
+    
+    .btn-ver:hover {
+        background: var(--marron-medio);
+        color: var(--blanco);
+        transform: translateY(-2px);
+    }
+    
+    .no-productos {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 8rem 3rem;
+        color: var(--marron-medio);
+        background: var(--blanco);
+        border-radius: 20px;
+        border: 2px dashed var(--accent);
+        backdrop-filter: blur(10px);
+    }
+    
+    .no-productos i {
+        font-size: 5rem;
+        margin-bottom: 2rem;
+        opacity: 0.4;
+    }
+    
+    .no-productos p {
+        font-size: 1.5rem;
+        margin: 0 0 1.5rem 0;
+        font-weight: 350;
+    }
+    
+    .no-productos .subtext {
+        font-size: 1.1rem;
+        opacity: 0.6;
+    }
+    
+    /* Efectos de carga */
+    .producto-card {
+        animation: cardEntrance 0.8s ease-out;
+        animation-fill-mode: both;
+    }
+    
+    @keyframes cardEntrance {
+        from {
+            opacity: 0;
+            transform: translateY(40px) scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+    
+    /* Escalonado de animaciones */
+    .producto-card:nth-child(2n) { animation-delay: 0.1s; }
+    .producto-card:nth-child(3n) { animation-delay: 0.2s; }
+    .producto-card:nth-child(4n) { animation-delay: 0.3s; }
+    
+    .products-controls {
+        max-width: 1400px;
+        margin: 0 auto 4rem;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .products-count {
+        color: var(--marron-medio);
+        font-size: 1.2rem;
+        font-weight: 450;
+        padding: 1rem 2rem;
+        background: var(--blanco);
+        border-radius: 15px;
+        border: 1px solid var(--accent);
+        box-shadow: 0 2px 10px rgba(141, 110, 99, 0.05);
+    }
+
+    /* WhatsApp Section */
+    .whatsapp-section {
+        max-width: 1400px;
+        margin: 4rem auto 6rem;
+        padding: 0 2rem;
+        text-align: center;
+    }
+    
+    .whatsapp-container {
+        background: var(--blanco);
+        border-radius: 25px;
+        padding: 3rem 2rem;
+        border: 1px solid var(--accent);
+        box-shadow: 
+            0 15px 40px rgba(141, 110, 99, 0.15),
+            0 5px 15px rgba(0, 0, 0, 0.05);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .whatsapp-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, 
+            #25D366 0%, 
+            #128C7E 50%, 
+            #075E54 100%);
+    }
+    
+    .whatsapp-icon {
+        font-size: 4rem;
+        color: #25D366;
+        margin-bottom: 1.5rem;
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    .whatsapp-title {
+        font-size: 2.2rem;
+        font-weight: 350;
+        color: var(--marron-oscuro);
+        margin-bottom: 1rem;
+        letter-spacing: -0.5px;
+    }
+    
+    .whatsapp-description {
+        color: var(--marron-medio);
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto 2.5rem;
+        line-height: 1.6;
+        opacity: 0.9;
+    }
+    
+    .whatsapp-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        color: white;
+        text-decoration: none;
+        padding: 1.2rem 2.5rem;
+        border-radius: 15px;
+        font-size: 1.2rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+        border: none;
+        cursor: pointer;
+    }
+    
+    .whatsapp-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
+        background: linear-gradient(135deg, #20bd5c 0%, #0e7a68 100%);
+    }
+    
+    .whatsapp-btn i {
+        font-size: 1.5rem;
+    }
+    
+    .whatsapp-number {
+        display: block;
+        margin-top: 1rem;
+        color: var(--marron-medio);
+        font-size: 1rem;
+        opacity: 0.8;
+    }
+    
+    /* Responsive */
+    @media (max-width: 1200px) {
+        .productos-container {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .page-header {
+            padding: 5rem 1rem 4rem;
+            min-height: 70vh;
+            background-attachment: scroll;
+        }
+        
+        .page-title {
+            font-size: 3rem;
+            padding: 0 1rem;
+        }
+        
+        .page-subtitle {
+            font-size: 1.4rem;
+            padding: 0 1.5rem;
+        }
+        
+        .whatsapp-title {
+            font-size: 1.8rem;
+        }
+        
+        .productos-container {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 0 1.5rem 4rem;
+        }
+        
+        .whatsapp-container {
+            padding: 2.5rem 1.5rem;
+        }
+        
+        .whatsapp-btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .productos-container {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        
+        .page-header {
+            padding: 4rem 1rem 3rem;
+            min-height: 60vh;
+        }
+        
+        .page-title {
+            font-size: 2.4rem;
+        }
+        
+        .page-subtitle {
+            font-size: 1.2rem;
+        }
+        
+        .whatsapp-title {
+            font-size: 1.5rem;
+        }
+        
+        .whatsapp-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+<div class="page-header">
+    <h1 class="page-title">Colección de Pijamas</h1>
+    <p class="page-subtitle">Descubre el confort perfecto para tus noches con nuestra exclusiva selección</p>
+</div>
+
+<div class="products-controls">
+    <div class="products-count">{{ productos|length }} producto{{ productos|length|pluralize }} disponible{{ productos|length|pluralize }}</div>
+</div>
 
 <div class="productos-container">
     {% for producto in productos %}
@@ -10,7 +542,10 @@
             {% if producto.imagen %}
                 <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="img-fluid">
             {% else %}
-                <div class="sin-imagen">Sin imagen</div>
+                <div class="sin-imagen">
+                    <i class="fas fa-tshirt"></i>
+                    Imagen no disponible
+                </div>
             {% endif %}
         </div>
         
@@ -21,19 +556,49 @@
                 </a>
             </h3>
             
-            <p class="producto-precio">${{ producto.precio }}</p>
+            <p class="producto-precio">{{ producto.precio }}</p>
             
             {% if producto.descripcion %}
             <p class="producto-descripcion">{{ producto.descripcion|truncatewords:20 }}</p>
             {% endif %}
+            
+            <div class="producto-actions">
+                <a href="{% url 'detalle_producto' producto.id %}" class="btn-ver">
+                    <i class="fas fa-eye me-2"></i>Ver Detalles
+                </a>
+            </div>
         </div>
     </div>
     {% empty %}
     <div class="no-productos">
-        <p>No hay productos disponibles.</p>
+        <i class="fas fa-search"></i>
+        <p>No hay productos disponibles</p>
+        <p class="subtext">Estamos trabajando en nuevas incorporaciones</p>
     </div>
     {% endfor %}
 </div>
 
+<!-- WhatsApp Section -->
+<div class="whatsapp-section">
+    <div class="whatsapp-container">
+        <div class="whatsapp-icon">
+            <i class="fab fa-whatsapp"></i>
+        </div>
+        <h2 class="whatsapp-title">¿Listo para comprar tu pijama ideal?</h2>
+        <p class="whatsapp-description">
+            Contáctanos directamente por WhatsApp para realizar tu pedido, 
+            consultar tallas, colores disponibles o cualquier duda sobre nuestros productos.
+            ¡Te atendemos personalmente!
+        </p>
+        <a href="https://wa.me/584148101663?text=Hola%20me%20interesa%20comprar%20una%20pijama%20de%20su%20colección" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i>
+            Comprar por WhatsApp
+        </a>
+        <span class="whatsapp-number">+58 414-8101663</span>
+    </div>
+</div>
 
 {% endblock %}

@@ -39,7 +39,7 @@ class PijamaUpdateView(UpdateView):
         'precio', 
         'imagen', 
         
-        'disponible'
+        'disponible',
     ]
     
 class PijamaDeleteView(DeleteView):

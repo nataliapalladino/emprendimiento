@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <style>
+        /* Variables de color */
+        :root {
+            --blanco: #FFFFFF;
+            --marron-claro: #D7CCC8;
+            --marron-medio: #8D6E63;
+            --marron-oscuro: #5D4037;
+            --negro: #212121;
+            --gris-claro: #F5F5F5;
+            --gris: #9E9E9E;
+            --error: #D32F2F;
+            --exito: #388E3C;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--gris-claro) 0%, var(--blanco) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: var(--blanco);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(93, 64, 55, 0.15);
+            overflow: hidden;
+            border: 1px solid var(--marron-claro);
+        }
+
+        .login-header {
+            background: linear-gradient(to right, var(--marron-oscuro), var(--marron-medio));
+            color: var(--blanco);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1%, transparent 1%);
+            background-size: 20px 20px;
+            opacity: 0.1;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .login-header h2 {
+            font-size: 28px;
+            font-weight: 300;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 0.5px;
+        }
+
+        .login-header p {
+            font-size: 14px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-form {
+            padding: 40px 35px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--marron-oscuro);
+            font-weight: 500;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--marron-claro);
+            border-radius: 8px;
+            font-size: 16px;
+            color: var(--negro);
+            background-color: var(--blanco);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--marron-medio);
+            box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: var(--gris);
+            opacity: 0.7;
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 13px;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .error-message::before {
+            content: '⚠';
+            font-size: 12px;
+        }
+
+        .form-actions {
+            margin-top: 30px;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, var(--marron-oscuro), var(--marron-medio));
+            color: var(--blanco);
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(93, 64, 55, 0.2);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .btn-login i {
+            font-size: 18px;
+        }
+
+        .login-footer {
+            padding: 25px 35px;
+            background-color: var(--gris-claro);
+            border-top: 1px solid var(--marron-claro);
+            text-align: center;
+            color: var(--marron-medio);
+            font-size: 14px;
+        }
+
+        .login-footer a {
+            color: var(--marron-oscuro);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            margin-left: 5px;
+        }
+
+        .login-footer a:hover {
+            color: var(--marron-medio);
+            text-decoration: underline;
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--marron-medio);
+            cursor: pointer;
+            font-size: 18px;
+            padding: 5px;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-password:hover {
+            color: var(--marron-oscuro);
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--marron-medio);
+            cursor: pointer;
+        }
+
+        .remember-me label {
+            color: var(--marron-medio);
+            cursor: pointer;
+            font-size: 14px;
+            text-transform: none;
+            margin: 0;
+        }
+
+        /* Estilos para mensajes de Django */
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-error {
+            background-color: rgba(211, 47, 47, 0.1);
+            border: 1px solid var(--error);
+            color: var(--error);
+        }
+
+        .alert-success {
+            background-color: rgba(56, 142, 60, 0.1);
+            border: 1px solid var(--exito);
+            color: var(--exito);
+        }
+
+        .alert i {
+            font-size: 16px;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                max-width: 100%;
+            }
+            
+            .login-header {
+                padding: 30px 20px;
+            }
+            
+            .login-header h2 {
+                font-size: 24px;
+            }
+            
+            .login-form {
+                padding: 30px 25px;
+            }
+            
+            .login-footer {
+                padding: 20px 25px;
+            }
+        }
+
+        /* Animación de entrada */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-container {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h2>Iniciar Sesión</h2>
+            <p>Accede a tu cuenta para continuar</p>
+        </div>
+        
+        <div class="login-form">
+            <!-- Mostrar mensajes de error de Django -->
+            {% if form.errors %}
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>Usuario o contraseña incorrectos. Por favor, inténtalo de nuevo.</span>
+                </div>
+            {% endif %}
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        <i class="fas fa-info-circle"></i>
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="id_username"><i class="fas fa-user"></i> Usuario</label>
+                    <input type="text" 
+                           id="id_username" 
+                           name="username" 
+                           placeholder="Ingresa tu nombre de usuario" 
+                           required
+                           value="{{ form.username.value|default:'' }}">
+                    {% if form.username.errors %}
+                        <div class="error-message">
+                            {{ form.username.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_password"><i class="fas fa-lock"></i> Contraseña</label>
+                    <div class="password-toggle">
+                        <input type="password" 
+                               id="id_password" 
+                               name="password" 
+                               placeholder="Ingresa tu contraseña" 
+                               required>
+                        <button type="button" class="toggle-password" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    {% if form.password.errors %}
+                        <div class="error-message">
+                            {{ form.password.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Recordar sesión (opcional) -->
+                <div class="remember-me">
+                    <input type="checkbox" id="remember_me" name="remember_me">
+                    <label for="remember_me">Recordar mi sesión</label>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Iniciar Sesión</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="login-footer">
+            ¿No tienes una cuenta?
+            <a href="#">Regístrate aquí</a>
+        </div>
+    </div>
+
+    <script>
+        // Toggle para mostrar/ocultar contraseña
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('id_password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Efecto de enfoque en los inputs
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.classList.remove('focused');
+            });
+        });
+
+        // Validación en tiempo real
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const username = document.getElementById('id_username').value.trim();
+            const password = document.getElementById('id_password').value.trim();
+            
+            if (!username || !password) {
+                e.preventDefault();
+                alert('Por favor, completa todos los campos requeridos.');
+                return false;
+            }
+            
+            // Agregar animación al botón
+            const btn = document.querySelector('.btn-login');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Iniciando sesión...</span>';
+            btn.disabled = true;
+            
+            return true;
+        });
+    </script>
+</body>
+</html>
